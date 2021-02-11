@@ -31,25 +31,22 @@ class RoomPage extends Component
         'featureSelected' => 'setSelectedFeature'
     ];
 
-    protected $queryString = [
-        'selectedFeatureId' => ['except' => ''],
-    ];
-
     public function mount(? Room $room)
     {
         $this->room = $room->exists
             ? $room
             : $this->getRoom();
-
-        if (!$this->selectedFeatureId && $this->featureList->count()) {
-            $this->selectedFeatureId = $this->featureList->first()->id;
-        }
     }
 
     public function render()
     {
         return view('livewire.room-page')
             ->layout('layouts.dark');
+    }
+
+    public function verifySelectedFeature()
+    {
+        $this->selectedFeatureId = $this->room->selected_feature_id;
     }
 
     public function getFeatureListProperty()
@@ -78,6 +75,9 @@ class RoomPage extends Component
     public function setSelectedFeature($feature)
     {
         $this->selectedFeatureId = $feature;
+        $this->room->forceFill([
+            'selected_feature_id' => $feature,
+        ])->save();
     }
 
     private function getRoom(): Room

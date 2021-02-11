@@ -1,4 +1,4 @@
-<div class='max-w-6xl px-8 mx-auto'>
+<div wire:poll="verifySelectedFeature" class='max-w-6xl px-8 mx-auto'>
     <div class="pt-16 flex items-center justify-between">
         <div>
             <h1 class="text-4xl">Scrum Poker</h1>

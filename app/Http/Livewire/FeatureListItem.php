@@ -15,17 +15,22 @@ class FeatureListItem extends Component
         return view('livewire.feature-list-item');
     }
 
+    public function getListeners()
+    {
+        return [
+            "featureUpdated.{$this->feature->id}" => '$refresh',
+        ];
+    }
+
     public function remove()
     {
-        $this->feature->delete();
+        $this->feature->room->removeFeature($this->feature);
         $this->emitUp('featureDeleted');
     }
 
     public function toggleComplete()
     {
-        $this->feature->isCompleted()
-            ? $this->feature->uncomplete()
-            : $this->feature->complete();
+        $this->feature->toggleComplete();
         $this->emitUp('featureUpdated');
     }
 

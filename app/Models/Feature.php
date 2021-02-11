@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int $room_id
  * @property-read Carbon $completed_at
  * @property-read Carbon $revealed_at
+ * @property-read Room $room
  * @package App\Models
  */
 class Feature extends Model
@@ -22,6 +23,11 @@ class Feature extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 
     public function scopeCompleted(Builder $query)
     {
@@ -55,5 +61,10 @@ class Feature extends Model
     public function isRevealed()
     {
         return !! $this->revealed_at;
+    }
+
+    public function toggleComplete()
+    {
+        $this->isCompleted() ? $this->uncomplete() : $this->complete();
     }
 }

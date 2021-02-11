@@ -1,14 +1,17 @@
+@if($feature)
 <div class="w-full">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl opacity-50">Voting Feature</h2>
 
         @if(isManager())
             <div class="flex items-center space-x-1">
-                <x-button.red class="p-2">
+                <x-button.red wire:click="remove" class="p-2">
                     <x-icon.trash class="w-4 h-4"></x-icon.trash>
                 </x-button.red>
                 <x-button.primary>Reveal</x-button.primary>
-                <x-button.green>Complete</x-button.green>
+                <x-button.green wire:click="toggleComplete">
+                    {{ $feature->isCompleted() ? 'Uncomplete' : 'Complete' }}
+                </x-button.green>
             </div>
         @endif
     </div>
@@ -33,3 +36,4 @@
         </div>
     </div>
 </div>
+@endif
