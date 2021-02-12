@@ -1,11 +1,15 @@
-<div wire:poll="verifySelectedFeature" class='max-w-6xl px-8 mx-auto'>
+<div
+    wire:poll="verifySelectedFeature"
+    class='max-w-6xl px-8 mx-auto'
+>
     <div class="pt-16 flex items-center justify-between">
         <div>
             <h1 class="text-4xl">Scrum Poker</h1>
             @if(isManager())
                 <h3 class="text-xl opacity-50">You are the Manager</h3>
-            @else
-                <h3 class="text-xl opacity-50">You are a participant</h3>
+            @endif
+            @if(participant())
+                <h3 class="text-xl opacity-50">Welcome, {{ participant()->name }}</h3>
             @endif
         </div>
 
@@ -52,7 +56,7 @@
         <div class="col-span-8">
             @if($selectedFeatureId)
                 <livewire:voting-feature
-                    :key="$selectedFeatureId"
+                    :key="$selectedFeatureId . $room->participants()->count()"
                     :selectedFeatureId="$selectedFeatureId"
                 />
             @endif

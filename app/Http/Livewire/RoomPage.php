@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Feature;
+use App\Models\Participant;
 use App\Models\Room;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
@@ -11,6 +12,7 @@ use Livewire\Component;
 
 /**
  * @property-read Collection $featureList
+ * @property-read Collection $participants
  * @package App\Http\Livewire
  */
 class RoomPage extends Component
@@ -19,7 +21,7 @@ class RoomPage extends Component
     public $newFeature;
     public $showCompleted = false;
     public $selectedFeatureId;
-    public bool $isParticipant = false;
+    public ?Participant $participant;
 
     protected $rules = [
         'newFeature' => 'required|string|max:512',

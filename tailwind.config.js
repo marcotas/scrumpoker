@@ -23,6 +23,7 @@ module.exports = {
         extend: {
             opacity: ['disabled'],
             scale: ['active'],
+            cursor: ['focus'],
         },
     },
 

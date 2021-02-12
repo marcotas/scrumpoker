@@ -19,9 +19,14 @@
     <h1 class="text-4xl mb-10">{{ $feature->name }}</h1>
 
     <div class="-mx-3">
-        <div class="flex flex-wrap">
-            @foreach ($participants as $participant)
-                <x-voting-card rating="?" :name="$participant['name']" />
+        <div x-data class="flex flex-wrap">
+            @foreach ($this->participants as $participant)
+                <x-voting-card
+                    rating="?"
+                    :participant="$participant"
+                    :name="$participant['name']"
+                    @remove-participant="$wire.removeParticipant($event.detail)"
+                />
             @endforeach
         </div>
     </div>

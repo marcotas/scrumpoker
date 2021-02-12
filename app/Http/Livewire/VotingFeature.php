@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Feature;
+use App\Models\Participant;
 use Livewire\Component;
 
 class VotingFeature extends Component
@@ -11,12 +12,6 @@ class VotingFeature extends Component
     public ?Feature $feature;
     public $ratings = [
         '?', 1, 2, 3, 5, 8, 10, 13, 21, 40, 100
-    ];
-    public $participants = [
-        ['name' => 'Marco'],
-        ['name' => 'John'],
-        ['name' => 'Alice'],
-        ['name' => 'Steve'],
     ];
 
     public function mount($selectedFeatureId)
@@ -29,11 +24,26 @@ class VotingFeature extends Component
         return view('livewire.voting-feature');
     }
 
+    public function getParticipantsProperty()
+    {
+        if (!$this->feature) {
+            return [];
+        }
+
+        return $this->feature->room->fresh()->participants;
+    }
+
     public function remove()
     {
         $this->feature->room->removeFeature($this->feature);
         $this->feature = null;
         $this->emitUp('featureDeleted');
+    }
+
+    public function removeParticipant(Participant $participant)
+    {
+        $participant->delete();
+        $this->emitSelf('$refresh');
     }
 
     public function toggleComplete()
