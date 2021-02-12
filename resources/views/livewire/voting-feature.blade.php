@@ -1,5 +1,5 @@
 @if($feature)
-<div class="w-full">
+<div class="w-full" wire:poll="verifyParticipants">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl opacity-50">Voting Feature</h2>
 
@@ -24,6 +24,7 @@
                 <x-voting-card
                     rating="?"
                     :participant="$participant"
+                    :selected="$this->hasVoted($participant)"
                     :name="$participant['name']"
                     @remove-participant="$wire.removeParticipant($event.detail)"
                 />
@@ -36,7 +37,11 @@
     <div class="-mx-3">
         <div class="flex flex-wrap">
             @foreach ($ratings as $rating)
-                <x-voting-card :rating="$rating" />
+                <x-voting-card
+                    :rating="$rating"
+                    :selected="$rating == $voted"
+                    wire:click="vote('{{ $rating }}')"
+                />
             @endforeach
         </div>
     </div>

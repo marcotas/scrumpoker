@@ -4,19 +4,27 @@ namespace App\Http\Livewire;
 
 use App\Models\Feature;
 use App\Models\Participant;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
+/**
+ * @property-read Collection $participants
+ * @package App\Http\Livewire
+ */
 class VotingFeature extends Component
 {
     public $selectedFeatureId;
     public ?Feature $feature;
+    public $voted;
     public $ratings = [
         '?', 1, 2, 3, 5, 8, 10, 13, 21, 40, 100
     ];
+    public $reactive;
 
     public function mount($selectedFeatureId)
     {
         $this->feature = Feature::find($selectedFeatureId);
+        $this->voted = $this->getEstimatePointValue($this->feature);
     }
 
     public function render()
@@ -30,7 +38,11 @@ class VotingFeature extends Component
             return [];
         }
 
-        return $this->feature->room->fresh()->participants;
+        return $this->feature->room->fresh()->participants()
+            ->with(['estimatePoints' => function ($estimatePoint) {
+                $estimatePoint->whereFeatureId($this->feature->id ?? null);
+            }])
+            ->get();
     }
 
     public function remove()
@@ -50,5 +62,33 @@ class VotingFeature extends Component
     {
         $this->feature->toggleComplete();
         $this->emit('featureUpdated.' . $this->feature->id);
+    }
+
+    public function vote($rating)
+    {
+        $this->voted = $rating;
+        $estimatePoint = participant()->vote($this->feature, $rating);
+    }
+
+    public function hasVoted(Participant $participant)
+    {
+        return $participant->getEstimatePoint($this->feature)->value ?? false;
+    }
+
+    public function verifyParticipants()
+    {
+        $this->reactive = $this->participants
+            ->sum(fn ($p) => $p->estimatePoints->sum('value'));
+    }
+
+    private function getEstimatePointValue(?Feature $feature)
+    {
+        if (!$feature || !participant()) {
+            return null;
+        }
+
+        return participant()->estimatePoints()
+            ->whereFeatureId($feature->id)
+            ->firstOrNew()->value;
     }
 }
