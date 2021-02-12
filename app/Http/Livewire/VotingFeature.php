@@ -70,7 +70,7 @@ class VotingFeature extends Component
         $estimatePoint = participant()->vote($this->feature, $rating);
     }
 
-    public function hasVoted(Participant $participant)
+    public function voteValue(Participant $participant)
     {
         return $participant->getEstimatePoint($this->feature)->value ?? false;
     }
@@ -78,7 +78,8 @@ class VotingFeature extends Component
     public function verifyParticipants()
     {
         $this->reactive = $this->participants
-            ->sum(fn ($p) => $p->estimatePoints->sum('value'));
+            ->map(fn (Participant $p) => $p->estimatePoints->map->value->join(''))
+            ->join('');
     }
 
     private function getEstimatePointValue(?Feature $feature)
@@ -90,5 +91,12 @@ class VotingFeature extends Component
         return participant()->estimatePoints()
             ->whereFeatureId($feature->id)
             ->firstOrNew()->value;
+    }
+
+    public function reveal()
+    {
+        $this->feature->update([
+            'revealed_at' => now(),
+        ]);
     }
 }

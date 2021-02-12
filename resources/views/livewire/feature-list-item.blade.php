@@ -1,3 +1,4 @@
+@if($feature)
 <div
     @if(isManager())
         wire:click="$emit('featureSelected', {{ $feature->id }})"
@@ -17,12 +18,12 @@
 
     @if(isManager())
         <div class="absolute bottom-0 right-0 p-1.5">
-            <x-button wire:click="remove" class="bg-red-400 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-200">
+            <x-button wire:click.stop="remove" class="bg-red-400 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-200">
                 <x-icon.trash class="w-4 h-4"></x-icon.trash>
             </x-button>
 
             <x-button
-                wire:click="toggleComplete"
+                wire:click.stop="toggleComplete"
                 class="bg-green-400 p-1.5 rounded-full
                 {{ $feature->isCompleted() ? 'opacity-100' : 'opacity-0' }}
                 group-hover:opacity-100 transition duration-200"
@@ -32,3 +33,4 @@
         </div>
     @endif
 </div>
+@endif

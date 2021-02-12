@@ -45,5 +45,6 @@ class Room extends Model
             $this->update(['selected_feature_id' => null]);
         }
         $feature->delete();
+        $this->refresh();
     }
 }

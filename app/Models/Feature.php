@@ -22,6 +22,8 @@ class Feature extends Model
 
     protected $fillable = [
         'name',
+        'revealed_at',
+        'completed_at',
     ];
 
     public function room()

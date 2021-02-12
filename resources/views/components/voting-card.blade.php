@@ -13,7 +13,7 @@
     "
     style="max-width: 96px"
 >
-    <div @click="console.log('teste 2')" class="w-24 h-36 mb-1 bg-white rounded-2xl flex items-center justify-center text-gray-900 text-opacity-75 text-5xl">
+    <div class="w-24 h-36 mb-1 bg-white rounded-2xl flex items-center justify-center text-gray-900 text-opacity-75 text-5xl">
         <span>{{ $rating }}</span>
     </div>
 

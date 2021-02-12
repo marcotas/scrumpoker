@@ -20,7 +20,6 @@ class RoomPage extends Component
     public Room $room;
     public $newFeature;
     public $showCompleted = false;
-    public $selectedFeatureId;
     public ?Participant $participant;
 
     protected $rules = [
@@ -46,11 +45,6 @@ class RoomPage extends Component
             ->layout('layouts.dark');
     }
 
-    public function verifySelectedFeature()
-    {
-        $this->selectedFeatureId = $this->room->selected_feature_id;
-    }
-
     public function getFeatureListProperty()
     {
         return $this->room->features()
@@ -74,12 +68,11 @@ class RoomPage extends Component
         $this->newFeature = null;
     }
 
-    public function setSelectedFeature($feature)
+    public function setSelectedFeature(Feature $feature)
     {
-        $this->selectedFeatureId = $feature;
-        $this->room->forceFill([
-            'selected_feature_id' => $feature,
-        ])->save();
+        $this->room->update([
+            'selected_feature_id' => $feature->id ?? null,
+        ]);
     }
 
     private function getRoom(): Room

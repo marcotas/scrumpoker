@@ -8,7 +8,7 @@
                 <x-button.red wire:click="remove" class="p-2">
                     <x-icon.trash class="w-4 h-4"></x-icon.trash>
                 </x-button.red>
-                <x-button.primary>Reveal</x-button.primary>
+                <x-button.primary wire:click="reveal">Reveal</x-button.primary>
                 <x-button.green wire:click="toggleComplete">
                     {{ $feature->isCompleted() ? 'Uncomplete' : 'Complete' }}
                 </x-button.green>
@@ -22,9 +22,9 @@
         <div x-data class="flex flex-wrap">
             @foreach ($this->participants as $participant)
                 <x-voting-card
-                    rating="?"
+                    :rating="$feature->isRevealed() ? $this->voteValue($participant) : ''"
                     :participant="$participant"
-                    :selected="$this->hasVoted($participant)"
+                    :selected="$this->voteValue($participant)"
                     :name="$participant['name']"
                     @remove-participant="$wire.removeParticipant($event.detail)"
                 />

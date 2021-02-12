@@ -1,5 +1,5 @@
 <div
-    wire:poll="verifySelectedFeature"
+    wire:poll
     class='max-w-6xl px-8 mx-auto'
 >
     <div class="pt-16 flex items-center justify-between">
@@ -47,17 +47,18 @@
             @foreach ($this->featureList as $feature)
                 <livewire:feature-list-item
                     :feature="$feature"
-                    :selectedFeatureId="$selectedFeatureId"
-                    :key='"room-{$room->id}-{$feature->id}-" . $selectedFeatureId ?? null'
+                    :selectedFeatureId="$room->selected_feature_id"
+                    :key='"room-{$room->id}-{$feature->id}-" . $room->selected_feature_id ?? null'
                 />
             @endforeach
         </div>
 
         <div class="col-span-8">
-            @if($selectedFeatureId)
+            @if($room->selected_feature_id)
+                {{ $room->selected_feature_id }}
                 <livewire:voting-feature
-                    :key="$selectedFeatureId . $room->participants()->count()"
-                    :selectedFeatureId="$selectedFeatureId"
+                    :key="$room->selected_feature_id . $room->participants()->count()"
+                    :selectedFeatureId="$room->selected_feature_id"
                 />
             @endif
         </div>
