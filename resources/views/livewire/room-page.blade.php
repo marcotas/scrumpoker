@@ -55,7 +55,6 @@
 
         <div class="col-span-8">
             @if($room->selected_feature_id)
-                {{ $room->selected_feature_id }}
                 <livewire:voting-feature
                     :key="$room->selected_feature_id . $room->participants()->count()"
                     :selectedFeatureId="$room->selected_feature_id"

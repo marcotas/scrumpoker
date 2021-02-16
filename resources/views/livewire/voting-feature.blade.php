@@ -32,18 +32,20 @@
         </div>
     </div>
 
-    <h3 class="text-2xl mt-10 mb-3 opacity-50">Cards:</h3>
+    @if(participant())
+        <h3 class="text-2xl mt-10 mb-3 opacity-50">Cards:</h3>
 
-    <div class="-mx-3">
-        <div class="flex flex-wrap">
-            @foreach ($ratings as $rating)
-                <x-voting-card
-                    :rating="$rating"
-                    :selected="$rating == $voted"
-                    wire:click="vote('{{ $rating }}')"
-                />
-            @endforeach
+        <div class="-mx-3">
+            <div class="flex flex-wrap">
+                @foreach ($ratings as $rating)
+                    <x-voting-card
+                        :rating="$rating"
+                        :selected="$rating == $voted"
+                        wire:click="vote('{{ $rating }}')"
+                    />
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 @endif
