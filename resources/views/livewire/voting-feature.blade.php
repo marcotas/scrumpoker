@@ -16,7 +16,19 @@
         @endif
     </div>
 
-    <h1 class="text-4xl mb-10">{{ $feature->name }}</h1>
+    <div>
+        @if(isManager())
+            <input
+                type="text"
+                class="w-full text-4xl mb-10 p-0 bg-transparent outline-none focus:outline-none ring-0 focus:ring-0 focus:border-0 border-0 cursor-pointer hover:bg-white hover:bg-opacity-5 focus:bg-white focus:bg-opacity-10 rounded-lg"
+                wire:model="feature.name"
+                wire:blur="saveFeature"
+            />
+            <x-jet-input-error for="feature.name" />
+        @else
+            <h1 class="text-4xl mb-10">{{ $feature->name }}</h1>
+        @endif
+    </div>
 
     <div class="-mx-3">
         <div x-data class="flex flex-wrap">

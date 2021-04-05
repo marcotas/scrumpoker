@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Feature;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 /**
@@ -20,6 +21,9 @@ class VotingFeature extends Component
         '?', 1, 2, 3, 5, 8, 10, 13, 21, 40, 100
     ];
     public $reactive;
+    protected $rules = [
+        'feature.name' => 'required|max:255',
+    ];
 
     public function mount($selectedFeatureId)
     {
@@ -98,5 +102,13 @@ class VotingFeature extends Component
         $this->feature->update([
             'revealed_at' => now(),
         ]);
+    }
+
+    public function saveFeature()
+    {
+        Gate::authorize('update', $this->feature);
+        $this->validate();
+        $this->feature->save();
+        $this->emit('featureUpdated.' . $this->feature->id);
     }
 }

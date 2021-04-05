@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\Room;
+use Illuminate\Support\Facades\Session;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -39,7 +42,16 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function setCurrentRoom(Room $room)
 {
-    // ..
+    Session::put('roomId', $room->id);
+
+    return test();
+}
+
+function actingAsManager(Room $room)
+{
+    Session::put('isManager', true);
+
+    return setCurrentRoom($room);
 }

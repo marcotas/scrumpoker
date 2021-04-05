@@ -22,7 +22,7 @@ class FeatureFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->words(rand(3, 5), true),
         ];
     }
 }
