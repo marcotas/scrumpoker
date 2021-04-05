@@ -18,7 +18,7 @@ class FeatureListItem extends Component
     public function getListeners()
     {
         return [
-            "featureUpdated.{$this->feature->id}" => '$refresh',
+            'featureUpdated.' . $this->feature->id => '$refresh',
         ];
     }
 
@@ -31,7 +31,6 @@ class FeatureListItem extends Component
     public function toggleComplete()
     {
         $this->feature->toggleComplete();
-        $this->emitUp('featureUpdated');
     }
 
     public function isSelectedFeature()

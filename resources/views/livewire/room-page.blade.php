@@ -1,14 +1,12 @@
-<div
-    wire:poll
-    class='max-w-6xl px-8 mx-auto'
->
+<div wire:poll.10s
+    class='max-w-6xl px-8 mx-auto'>
     <div class="pt-16 flex items-center justify-between">
         <div>
             <h1 class="text-4xl">Scrum Poker</h1>
-            @if(isManager())
+            @if (isManager())
                 <h3 class="text-xl opacity-50">You are the Manager</h3>
             @endif
-            @if(participant())
+            @if (participant())
                 <h3 class="text-xl opacity-50">Welcome, {{ participant()->name }}</h3>
             @endif
         </div>
@@ -22,43 +20,40 @@
     <div class="grid grid-cols-12 gap-10 mt-32">
         <div class="col-span-4 space-y-3">
             <div>
-                @if(isManager())
-                    <form wire:submit.prevent='addNewFeature' class="relative">
-                        <input
-                            type="text"
+                @if (isManager())
+                    <form wire:submit.prevent='addNewFeature'
+                        class="relative">
+                        <input type="text"
                             wire:model.defer='newFeature'
                             class="rounded-full w-full bg-white bg-opacity-10 pl-3 pr-10 py-1.5 border-none focus:outline-none focus:ring-2 focus:ring-primary-500"
-                            placeholder="Add new feature..."
-                        />
-                        <x-button type="submit" class="bg-primary-500 p-1 rounded-full absolute top-1 right-1">
+                            placeholder="Add new feature..." />
+                        <x-button type="submit"
+                            class="bg-primary-500 p-1 rounded-full absolute top-1 right-1">
                             <x-icon.plus class="w-5 h-5"></x-icon.plus>
                         </x-button>
                     </form>
                     <x-jet-input-error for="newFeature"></x-jet-input-error>
                 @endif
 
-                @if($this->completedFeatureCount > 0)
-                <span class="opacity-50 text-xs cursor-pointer hover:underline" wire:click="$toggle('showCompleted')">
-                    {{ $showCompleted ? 'Hide' : 'Show' }} {{ $this->completedFeatureCount }} completed features
-                </span>
+                @if ($this->completedFeatureCount > 0)
+                    <span class="opacity-50 text-xs cursor-pointer hover:underline"
+                        wire:click="$toggle('showCompleted')">
+                        {{ $showCompleted ? 'Hide' : 'Show' }} {{ $this->completedFeatureCount }} completed features
+                    </span>
                 @endif
             </div>
 
             @foreach ($this->featureList as $feature)
-                <livewire:feature-list-item
-                    :feature="$feature"
+                <livewire:feature-list-item :feature="$feature"
                     :selectedFeatureId="$room->selected_feature_id"
-                    :key='"room-{$room->id}-{$feature->id}-" . $room->selected_feature_id ?? null'
-                />
+                    :key='"room-{$room->id}-{$feature->id}-" . $room->updated_at->toString()' />
             @endforeach
         </div>
 
         <div class="col-span-8">
-            @if($room->selected_feature_id)
-                <livewire:voting-feature
-                    :key="$room->selected_feature_id . $room->participants()->count()"
-                    :selectedFeatureId="$room->selected_feature_id"
-                />
+            @if ($room->selected_feature_id)
+                <livewire:voting-feature :key="'voting-' . $room->selected_feature_id . $room->updated_at->toString()"
+                    :selectedFeatureId="$room->selected_feature_id" />
             @endif
         </div>
     </div>

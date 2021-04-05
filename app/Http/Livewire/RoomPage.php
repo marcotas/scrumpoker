@@ -28,7 +28,6 @@ class RoomPage extends Component
 
     protected $listeners = [
         'featureDeleted' => '$refresh',
-        'featureUpdated' => '$refresh',
         'featureSelected' => 'setSelectedFeature'
     ];
 

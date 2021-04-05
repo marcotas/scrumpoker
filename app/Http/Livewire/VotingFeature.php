@@ -65,7 +65,6 @@ class VotingFeature extends Component
     public function toggleComplete()
     {
         $this->feature->toggleComplete();
-        $this->emit('featureUpdated.' . $this->feature->id);
     }
 
     public function vote($rating)
@@ -109,6 +108,7 @@ class VotingFeature extends Component
         Gate::authorize('update', $this->feature);
         $this->validate();
         $this->feature->save();
+        $this->feature->room->touch();
         $this->emit('featureUpdated.' . $this->feature->id);
     }
 }
