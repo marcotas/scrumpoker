@@ -2,6 +2,7 @@ const { colors } = require('tailwindcss/defaultTheme');
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+    mode: 'jit',
     purge: [
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
@@ -16,14 +17,6 @@ module.exports = {
             colors: {
                 primary: colors.indigo
             }
-        },
-    },
-
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-            scale: ['active'],
-            cursor: ['focus'],
         },
     },
 
